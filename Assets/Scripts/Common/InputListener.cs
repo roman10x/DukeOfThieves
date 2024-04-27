@@ -16,10 +16,5 @@ namespace DukeOfThieves.Common
         {
             _onTapAction?.Invoke();
         }
-
-        private void OnDestroy()
-        {
-            Debug.Log("destroyed");
-        }
     }
 }

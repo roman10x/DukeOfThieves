@@ -390,7 +390,7 @@ namespace UICore
             }
         }
 
-        private void ShowWindow(WindowStackPush windowData)
+        private async Task ShowWindow(WindowStackPush windowData)
         {
             // Push window.
             var windowKeys = windowData.key;
@@ -407,11 +407,11 @@ namespace UICore
                 return;
             }
             
-            var window = CreateWindow(windowData,_rootCanvas.transform);
+            var window = await CreateWindow(windowData,_rootCanvas.transform);
             SetupWindow(windowData, window);
         }
 
-        private Window CreateWindow(WindowStackPush windowData, Transform parent)
+        private async Task<Window> CreateWindow(WindowStackPush windowData, Transform parent)
         {
 
             var prefab = windowData.customWindowPrefab;
@@ -420,7 +420,7 @@ namespace UICore
                 prefab = GetWindowFromStorage(windowData.key);
                 if (prefab == null)
                 {
-                    prefab = GetWindowFromAdressables(windowData.key);
+                    prefab = await GetWindowFromAdressables(windowData.key);
                 }
             }
           
@@ -440,10 +440,10 @@ namespace UICore
             return window;
         }
 
-        private Window GetWindowFromAdressables(WindowKeys key)
+        private async Task<Window> GetWindowFromAdressables(WindowKeys key)
         {
-            var go = _assetSystem.Load<GameObject>(key.ToString());
-            return go != null ? go.Result.GetComponent<Window>() : null;
+            var go = await _assetSystem.Load<GameObject>(key.ToString());
+            return go != null ? go.GetComponent<Window>() : null;
         }
 
         private Window GetWindowFromStorage(WindowKeys key)

@@ -21,8 +21,7 @@ namespace DukeOfThieves.Infrastructure
     public void Enter()
     {
       LoadProgressOrInitNew();
-      
-      _gameStateMachine.Enter<LoadLevelState, string>(_progressService.Progress.WorldData.PositionOnLevel.Level);
+      //_gameStateMachine.Enter<LoadLevelState, string>(_progressService.Progress.WorldData.PositionOnLevel.Level);
     }
 
     public void Exit()
@@ -34,6 +33,8 @@ namespace DukeOfThieves.Infrastructure
       _progressService.Progress = 
         _saveLoadProgress.LoadProgress() 
         ?? NewProgress();
+      
+      _gameStateMachine.Enter<MainMenuState>();
     }
 
     private PlayerProgress NewProgress()

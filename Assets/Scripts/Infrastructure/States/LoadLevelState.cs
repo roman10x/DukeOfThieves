@@ -86,7 +86,5 @@ namespace DukeOfThieves.Infrastructure
 
     private LevelStaticData LevelStaticData() => 
       _staticData.ForLevel(SceneManager.GetActiveScene().name);
-
-    
   }
 }

@@ -18,11 +18,13 @@ namespace DukeOfThieves.Infrastructure
       _states = new Dictionary<Type, IExitableState>
       {
         [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, uiManager, inputListener, services),
+        [typeof(MainMenuState)] = new MainMenuState(this, sceneLoader, loadingCurtain, uiManager),
         [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain, services.Single<IGameFactory>(),
           services.Single<IPersistentProgressService>(), services.Single<IStaticDataService>()),
-        
         [typeof(LoadProgressState)] = new LoadProgressState(this, services.Single<IPersistentProgressService>(), services.Single<ISaveLoadService>()),
+        
         [typeof(GameLoopState)] = new GameLoopState(this),
+        
       };
     }
     

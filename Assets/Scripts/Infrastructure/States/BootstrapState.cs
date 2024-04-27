@@ -29,12 +29,13 @@ namespace DukeOfThieves.Infrastructure
       _uiManager = uiManager;
       _services = services;
       _inputListener = inputListener;
-
       RegisterServices();
     }
 
-    public void Enter() =>
-      _sceneLoader.Load(Initial, onLoaded: EnterLoadLevel);
+    public void Enter()
+    {
+      _sceneLoader.Load(Initial, onLoaded: EnterMainMenu);
+    }
 
     public void Exit()
     {
@@ -43,7 +44,7 @@ namespace DukeOfThieves.Infrastructure
     private void RegisterServices()
     {
       RegisterStaticDataService();
-
+      
       _services.RegisterSingle<IGameStateMachine>(_stateMachine);
       RegisterAssetProvider();
       _services.RegisterSingle<IRandomService>(new RandomService());
@@ -57,14 +58,16 @@ namespace DukeOfThieves.Infrastructure
         _services.Single<IGameStateMachine>()
         ));
       
-      _services.RegisterSingle<UIManager>(_uiManager);
-      _uiManager.Init(_assetProvider);
+      
       
       _services.RegisterSingle<InputListener>(_inputListener);
       
       _services.RegisterSingle<ISaveLoadService>(new SaveLoadService(
         _services.Single<IPersistentProgressService>(),
         _services.Single<IGameFactory>()));
+      
+      _services.RegisterSingle<UIManager>(_uiManager);
+      _uiManager.Init(_assetProvider);
     }
 
     private void RegisterAssetProvider()
@@ -81,7 +84,7 @@ namespace DukeOfThieves.Infrastructure
       _services.RegisterSingle(staticData);
     }
 
-    private void EnterLoadLevel() =>
+    private void EnterMainMenu() =>
       _stateMachine.Enter<LoadProgressState>();
   }
 }
