@@ -21,7 +21,6 @@ namespace DukeOfThieves.Infrastructure
             var loadingCurtain = Instantiate(_curtainPrefab);
             var uiManager = Instantiate(_uiManager, parent: this.transform);
             var inputListener = Instantiate(_inputListener, parent: this.transform);
-            Debug.Break();
             
             _game = new Game(this, loadingCurtain, uiManager, inputListener);
             _game.StateMachine.Enter<BootstrapState>();

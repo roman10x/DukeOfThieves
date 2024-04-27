@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level1Data
   m_EditorClassIdentifier: 
   LevelKey: Dungeon
-  InitialHeroPosition: {x: 0, y: 0}
+  InitialHeroPosition: {x: -7.39, y: -3.4}
   GamePrefab: {fileID: 2781709392946250689, guid: a1ee45daec7554a4f8ca4aa2c0d09a13, type: 3}
   MenuImage: {fileID: 0}
   Music: {fileID: 0}
