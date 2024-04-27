@@ -1,8 +1,9 @@
 ﻿
+using DukeOfThieves.Common;
 using DukeOfThieves.Infrastructure.AssetManagement;
 using DukeOfThieves.Services;
 using DukeOfThieves.Services.Randomizer;
-using UI;
+using UICore;
 using UnityEngine;
 
 namespace DukeOfThieves.Infrastructure
@@ -13,13 +14,21 @@ namespace DukeOfThieves.Infrastructure
     
     private readonly GameStateMachine _stateMachine;
     private readonly SceneLoader _sceneLoader;
+    private readonly UIManager _uiManager;
+    private readonly InputListener _inputListener;
     private readonly AllServices _services;
 
-    public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader, AllServices services)
+    private AssetProvider _assetProvider;
+
+    public BootstrapState(GameStateMachine stateMachine, SceneLoader sceneLoader, UIManager uiManager,
+      InputListener inputListener,
+      AllServices services)
     {
       _stateMachine = stateMachine;
       _sceneLoader = sceneLoader;
+      _uiManager = uiManager;
       _services = services;
+      _inputListener = inputListener;
 
       RegisterServices();
     }
@@ -36,12 +45,10 @@ namespace DukeOfThieves.Infrastructure
       RegisterStaticDataService();
 
       _services.RegisterSingle<IGameStateMachine>(_stateMachine);
-      //RegisterAssetProvider();
+      RegisterAssetProvider();
       _services.RegisterSingle<IRandomService>(new RandomService());
       _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
 
-      _services.RegisterSingle<UIManager>(new UIManager());
-      
       _services.RegisterSingle<IGameFactory>(new GameFactory(
         _services.Single<IAssetProvider>(),
         _services.Single<IStaticDataService>(),
@@ -50,16 +57,21 @@ namespace DukeOfThieves.Infrastructure
         _services.Single<IGameStateMachine>()
         ));
       
+      _services.RegisterSingle<UIManager>(_uiManager);
+      _uiManager.Init(_assetProvider);
+      
+      _services.RegisterSingle<InputListener>(_inputListener);
+      
       _services.RegisterSingle<ISaveLoadService>(new SaveLoadService(
         _services.Single<IPersistentProgressService>(),
         _services.Single<IGameFactory>()));
     }
 
     private void RegisterAssetProvider()
-    {
-      AssetProvider assetProvider = new AssetProvider();
-      _services.RegisterSingle<IAssetProvider>(assetProvider);
-      assetProvider.Initialize();
+    { 
+      _assetProvider = new AssetProvider();
+      _services.RegisterSingle<IAssetProvider>(_assetProvider);
+      _assetProvider.Initialize();
     }
 
     private void RegisterStaticDataService()

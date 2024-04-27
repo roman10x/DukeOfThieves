@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using DukeOfThieves.Common;
 using DukeOfThieves.Logic;
 using DukeOfThieves.Services;
+using UICore;
 
 
 namespace DukeOfThieves.Infrastructure
@@ -11,11 +13,11 @@ namespace DukeOfThieves.Infrastructure
     private Dictionary<Type, IExitableState> _states;
     private IExitableState _activeState;
 
-    public GameStateMachine(SceneLoader sceneLoader, LoadingCurtain loadingCurtain, AllServices services)
+    public GameStateMachine(SceneLoader sceneLoader, LoadingCurtain loadingCurtain, UIManager uiManager, InputListener inputListener, AllServices services)
     {
       _states = new Dictionary<Type, IExitableState>
       {
-        [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
+        [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, uiManager, inputListener, services),
         [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain, services.Single<IGameFactory>(),
           services.Single<IPersistentProgressService>(), services.Single<IStaticDataService>()),
         

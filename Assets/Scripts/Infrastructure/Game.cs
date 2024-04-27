@@ -1,5 +1,7 @@
-﻿using DukeOfThieves.Logic;
+﻿using DukeOfThieves.Common;
+using DukeOfThieves.Logic;
 using DukeOfThieves.Services;
+using UICore;
 using UnityEngine;
 
 namespace DukeOfThieves.Infrastructure
@@ -10,9 +12,9 @@ namespace DukeOfThieves.Infrastructure
 
         public GameStateMachine StateMachine => _stateMachine;
 
-        public Game(ICoroutineRunner coroutineRunner, LoadingCurtain curtain)
+        public Game(ICoroutineRunner coroutineRunner, LoadingCurtain curtain, UIManager uiManager, InputListener inputListener)
         {
-            _stateMachine = new GameStateMachine(new SceneLoader(coroutineRunner), curtain, AllServices.Container);
+            _stateMachine = new GameStateMachine(new SceneLoader(coroutineRunner), curtain, uiManager, inputListener, AllServices.Container);
         }
     }
 }

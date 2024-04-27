@@ -1,5 +1,7 @@
 ﻿using System;
 using DukeOfThieves.Common;
+using DukeOfThieves.Services;
+using UICore;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -13,8 +15,6 @@ namespace DukeOfThieves.Player
         private CollisionEventHandler _frontColliderHandler;
         [SerializeField]
         private Rigidbody2D _rigidBody;
-
-        [SerializeField] private InputListener _inputListener;
         
         [Header("Parameters")]
         [SerializeField]
@@ -24,6 +24,7 @@ namespace DukeOfThieves.Player
         [SerializeField]
         private float _wallSlideSpeed = -1.0f;
 
+        private InputListener _inputListener;
         private bool _canJump;
         private bool _isStanding;
         private bool _isJumping;
@@ -32,6 +33,8 @@ namespace DukeOfThieves.Player
 
         private void Start()
         {
+            _inputListener = AllServices.Container.Single<InputListener>();
+            var uiManager = AllServices.Container.Single<UIManager>();
             _inputListener.Initialize(OnTap);
             InitColliderHandlers();
         }

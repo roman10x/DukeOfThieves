@@ -3,10 +3,13 @@ using UnityEngine;
 
 namespace DukeOfThieves.StaticData
 {
-  [CreateAssetMenu(fileName = "LevelData", menuName = "Static Data/Level")]
+  [CreateAssetMenu(fileName = "LevelData", menuName = "Data/Level")]
   public class LevelStaticData : ScriptableObject
   {
     public string LevelKey;
-    public Vector3 InitialHeroPosition;
+    public Vector2 InitialHeroPosition;
+    public GameObject GamePrefab;
+    public Sprite MenuImage;
+    public AudioClip Music;
   }
 }

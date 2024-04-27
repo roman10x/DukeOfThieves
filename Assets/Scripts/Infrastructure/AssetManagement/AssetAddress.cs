@@ -5,5 +5,8 @@ namespace DukeOfThieves.Infrastructure.AssetManagement
     public const string HeroPath = "hero";
     public const string Loot = "Loot";
     public const string Spawner = "SpawnPoint";
+    public const string WindowStorage = "WindowStorage";
+    public const string LevelStorage = "LevelStorage";
+    public const string InputListener = "InputListener";
   }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using RotaryHeart.Lib.SerializableDictionaryPro;
 
 namespace DukeOfThieves.Data
 {

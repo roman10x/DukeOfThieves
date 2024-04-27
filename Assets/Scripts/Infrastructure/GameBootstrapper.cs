@@ -1,4 +1,6 @@
-﻿using DukeOfThieves.Logic;
+﻿using DukeOfThieves.Common;
+using DukeOfThieves.Logic;
+using UICore;
 using UnityEngine;
 
 namespace DukeOfThieves.Infrastructure
@@ -7,12 +9,21 @@ namespace DukeOfThieves.Infrastructure
     {
         [SerializeField]
         private LoadingCurtain _curtainPrefab;
+        [SerializeField] 
+        private UIManager _uiManager;
+        [SerializeField] 
+        private InputListener _inputListener;
         
         private Game _game;
 
         private void Awake()
         {
-            _game = new Game(this, Instantiate(_curtainPrefab));
+            var loadingCurtain = Instantiate(_curtainPrefab);
+            var uiManager = Instantiate(_uiManager, parent: this.transform);
+            var inputListener = Instantiate(_inputListener, parent: this.transform);
+            Debug.Break();
+            
+            _game = new Game(this, loadingCurtain, uiManager, inputListener);
             _game.StateMachine.Enter<BootstrapState>();
 
             DontDestroyOnLoad(this);

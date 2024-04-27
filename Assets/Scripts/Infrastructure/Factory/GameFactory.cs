@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using DukeOfThieves.Common;
 using DukeOfThieves.Infrastructure.AssetManagement;
 using DukeOfThieves.Services;
 using DukeOfThieves.Services.Randomizer;
+using DukeOfThieves.StaticData;
 using UnityEngine;
 using UnityEngine.AI;
+using Object = UnityEngine.Object;
 
 namespace DukeOfThieves.Infrastructure
 {
@@ -20,6 +24,8 @@ namespace DukeOfThieves.Infrastructure
     private GameObject _heroGameObject;
     private readonly IGameStateMachine _stateMachine;
 
+    private LevelStorage _levelStorage;
+    
     public GameFactory(
       IAssetProvider assets, 
       IStaticDataService staticData, 
@@ -34,17 +40,14 @@ namespace DukeOfThieves.Infrastructure
       _stateMachine = stateMachine;
     }
 
-    public async Task WarmUp()
+    public async Task WarmUp(Action onWarmed)
     {
-      await _assets.Load<GameObject>(AssetAddress.Loot);
-      await _assets.Load<GameObject>(AssetAddress.Spawner);
+      _levelStorage = await _assets.Load<LevelStorage>(AssetAddress.LevelStorage);
+      onWarmed?.Invoke();
     }
 
-    public async Task<GameObject> CreateHero(Vector3 at) =>
+    public async Task<GameObject> CreateHero(Vector2 at) =>
       _heroGameObject = await InstantiateRegisteredAsync(AssetAddress.HeroPath, at);
-  
-   
-
     
 
     private void Register(ISavedProgressReader progressReader)
@@ -60,9 +63,14 @@ namespace DukeOfThieves.Infrastructure
       ProgressReaders.Clear();
       ProgressWriters.Clear();
       
-      //_assets.Cleanup();
+      _assets.Cleanup();
     }
-    
+
+    public LevelStaticData PrepareLevel(int index)
+    {
+      return _levelStorage.GetLevelByIndex(index);
+    }
+
     private GameObject InstantiateRegistered(GameObject prefab, Vector3 at)
     {
       GameObject gameObject = Object.Instantiate(prefab, at, Quaternion.identity);
@@ -79,7 +87,7 @@ namespace DukeOfThieves.Infrastructure
       return gameObject;
     }
 
-    private async Task<GameObject> InstantiateRegisteredAsync(string prefabPath, Vector3 at)
+    private async Task<GameObject> InstantiateRegisteredAsync(string prefabPath, Vector2 at)
     {
       GameObject gameObject = await _assets.Instantiate(path: prefabPath, at: at);
       RegisterProgressWatchers(gameObject);

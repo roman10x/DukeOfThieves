@@ -16,6 +16,8 @@ namespace DukeOfThieves.Infrastructure
     private readonly IPersistentProgressService _progressService;
     private readonly IStaticDataService _staticData;
 
+    private string _sceneName;
+
     public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain, IGameFactory gameFactory, IPersistentProgressService progressService, IStaticDataService staticDataService)
     {
       _stateMachine = gameStateMachine;
@@ -24,15 +26,20 @@ namespace DukeOfThieves.Infrastructure
       _gameFactory = gameFactory;
       _progressService = progressService;
       _staticData = staticDataService;
-      
     }
 
     public void Enter(string sceneName)
     {
+      Debug.Log("level started");
+      _sceneName = sceneName;
       _loadingCurtain.Show();
       _gameFactory.Cleanup();
-      //_gameFactory.WarmUp();
-      _sceneLoader.Load(sceneName, OnLoaded);
+      _gameFactory.WarmUp(OnWarmed);
+    }
+
+    private void OnWarmed()
+    {
+      _sceneLoader.Load(_sceneName, OnLoaded);
     }
 
     public void Exit() =>
@@ -54,12 +61,11 @@ namespace DukeOfThieves.Infrastructure
 
     private async Task InitGameWorld()
     {
-      LevelStaticData levelData = LevelStaticData();
+      LevelStaticData levelData = _gameFactory.PrepareLevel(0);
 
       await InitSpawners(levelData);
       await InitLootPieces();
-      //GameObject hero = await InitHero(levelData);
-      
+      GameObject hero = await InitHero(levelData);
     }
 
     private async Task InitSpawners(LevelStaticData levelStaticData)
@@ -75,7 +81,6 @@ namespace DukeOfThieves.Infrastructure
 
     private async Task<GameObject> InitHero(LevelStaticData levelStaticData) => 
       await _gameFactory.CreateHero(levelStaticData.InitialHeroPosition);
-    
 
    
 
