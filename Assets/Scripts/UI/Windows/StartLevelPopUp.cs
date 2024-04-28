@@ -18,6 +18,7 @@ namespace UI.Windows
 
         private int _selectedLevelIndex;
         private PlayerProgress _playerProgress;
+        private int _selectedLevelIndexId;
 
         public override void OnPush()
         {
@@ -46,8 +47,17 @@ namespace UI.Windows
             UIHelper.InitWidgets(_levelCardWidgets, levelStorage.GetTotalLevelAmount(),
                 (w, index) =>
                 {
-                    w.Init(levelStorage.GetLevelByIndex(index), worldData.LootDataForLevel(index));
+                    w.Init(levelStorage.GetLevelByIndex(index), 
+                        OnWidgetSelected, 
+                        worldData.LootDataForLevel(index), 
+                        index, 
+                        index == 0);
                 });
+        }
+        
+        private void OnWidgetSelected(int selectedLevelIndex)
+        {
+            _selectedLevelIndexId = selectedLevelIndex;
         }
     }
 }
