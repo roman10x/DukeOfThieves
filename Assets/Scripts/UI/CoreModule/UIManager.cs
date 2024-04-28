@@ -433,9 +433,7 @@ namespace UICore
             var window = Instantiate(prefab, parent);
             // Resetting rect transform settings of the window prefab
             ResetRectTransform(window);
-            //_container.Inject(window);
-           
-            
+            //_container.Inject(window); // LEft for future development
             
             return window;
         }

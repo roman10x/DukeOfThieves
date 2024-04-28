@@ -15,5 +15,5 @@ MonoBehaviour:
   LevelKey: Cave
   InitialHeroPosition: {x: 0, y: 0}
   GamePrefab: {fileID: 2781709392946250689, guid: 4a01f4405fb6d6541948bf5917817edd, type: 3}
-  MenuImage: {fileID: 0}
+  MenuImage: {fileID: 21300000, guid: ea34ba315b44c6e46869046040647ed8, type: 3}
   Music: {fileID: 0}

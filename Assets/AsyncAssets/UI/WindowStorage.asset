@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _windowByKey:
     m_val: 7
-    m_keys: 0a00000001000000
+    m_keys: 0a0000000100000014000000
     m_values:
     - {fileID: 0}
     - {fileID: 8388123439572905128, guid: c57ffc9288cbf1746b74d45fa8ffd59f, type: 3}
+    - {fileID: -3000412169421816878, guid: 01ec90594e806ad4598f32d95deb75e5, type: 3}

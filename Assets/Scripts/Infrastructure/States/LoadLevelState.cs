@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace DukeOfThieves.Infrastructure
 {
-  public class LoadLevelState : IPayloadedState<string>
+  public class LoadLevelState : IPayloadedState<int>
   {
     private readonly GameStateMachine _stateMachine;
     private readonly SceneLoader _sceneLoader;
@@ -28,10 +28,9 @@ namespace DukeOfThieves.Infrastructure
       _staticData = staticDataService;
     }
 
-    public void Enter(string sceneName)
+    public void Enter(int levelIndex)
     {
       Debug.Log("level started");
-      _sceneName = sceneName;
       _loadingCurtain.Show();
       _gameFactory.Cleanup();
       _gameFactory.WarmUp(OnWarmed);

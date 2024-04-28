@@ -58,8 +58,6 @@ namespace DukeOfThieves.Infrastructure
         _services.Single<IGameStateMachine>()
         ));
       
-      
-      
       _services.RegisterSingle<InputListener>(_inputListener);
       
       _services.RegisterSingle<ISaveLoadService>(new SaveLoadService(

@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b18f020c62140f997c61d5aa42481f7, type: 3}
   m_Name: LevelStorage
   m_EditorClassIdentifier: 
-  _windowByKey:
+  _levelByIndex:
     m_val: 7
-    m_keys: 0000000001000000
+    m_keys: 000000000100000002000000
     m_values:
     - {fileID: 11400000, guid: 5f32defd2d9e4134e85a5fb2135195c2, type: 2}
     - {fileID: 11400000, guid: adb3a5a8821f9774382a4f674937a291, type: 2}
+    - {fileID: 11400000, guid: 731898416e2b88c409c612b9b08d2e3f, type: 2}

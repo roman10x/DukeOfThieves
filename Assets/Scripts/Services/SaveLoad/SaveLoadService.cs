@@ -21,13 +21,15 @@ namespace DukeOfThieves.Services
     {
       foreach (ISavedProgress progressWriter in _gameFactory.ProgressWriters)
         progressWriter.UpdateProgress(_progressService.Progress);
-      
-      PlayerPrefs.SetString(ProgressKey, _progressService.Progress.ToJson());
+
+      var savedJson = _progressService.Progress.ToJson();
+      PlayerPrefs.SetString(ProgressKey, savedJson);
     }
 
     public PlayerProgress LoadProgress()
     {
-      return PlayerPrefs.GetString(ProgressKey)?
+      var playerProgress = PlayerPrefs.GetString(ProgressKey);
+      return playerProgress?
         .ToDeserialized<PlayerProgress>();
     }
   }

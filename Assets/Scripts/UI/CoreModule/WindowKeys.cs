@@ -8,6 +8,7 @@ namespace UICore
     {
         Empty = 0,
         MainMenuWindow = 1,
-        GameHud = 10
+        GameHud = 10,
+        StartLevelPopUp = 20, 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace DukeOfThieves.Data
@@ -6,23 +7,32 @@ namespace DukeOfThieves.Data
   [Serializable]
   public class LootData
   {
-    [SerializeField]
-    private int _collected;
-    [SerializeField]
-    private LootPieceDataDictionary _lootPiecesOnScene = new LootPieceDataDictionary();
+    [JsonProperty(PropertyName = "collectedCoins")] 
+    private int _collectedCoins;
     
+    [JsonIgnore]
     public Action Changed;
 
     public void Collect(Loot loot)
     {
-      _collected += loot.Value;
+      _collectedCoins += loot.Value;
+      Changed?.Invoke();
+    }
+    public void Add(int lootValue)
+    {
+      _collectedCoins += lootValue;
       Changed?.Invoke();
     }
 
-    public void Add(int lootValue)
+    public LootData()
     {
-      _collected += lootValue;
-      Changed?.Invoke();
+      _collectedCoins = 0;
+    }
+    
+    [JsonConstructor]
+    private LootData(int collectedCoins)
+    {
+      _collectedCoins = collectedCoins;
     }
   }
 }
