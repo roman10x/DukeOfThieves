@@ -27,7 +27,6 @@ namespace DukeOfThieves.Logic
     
         private IEnumerator DoFadeIn()
         {
-            Debug.Log("Curtain fade out");
             while (_curtain.alpha > 0)
             {
                 _curtain.alpha -= _curtainDarkAlpha;

@@ -1,5 +1,6 @@
 ﻿using DukeOfThieves.Common;
 using DukeOfThieves.Logic;
+using DukeOfThieves.Services;
 using UICore;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ namespace DukeOfThieves.Infrastructure
             var uiManager = Instantiate(_uiManager, parent: this.transform);
             var inputListener = Instantiate(_inputListener, parent: this.transform);
             
-            _game = new Game(this, loadingCurtain, uiManager, inputListener, _levelLayoutController);
+            _game = new Game(this, loadingCurtain, uiManager, inputListener);
             _game.StateMachine.Enter<BootstrapState>();
 
             DontDestroyOnLoad(this);
@@ -36,6 +37,7 @@ namespace DukeOfThieves.Infrastructure
         {
             var levelController = Instantiate(_levelLayoutControllerPrefab);
             _levelLayoutController = levelController;
+            AllServices.Container.Single<IGameFactory>().SetLevelLayoutController(_levelLayoutController);
         }
     }
 }

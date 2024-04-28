@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DukeOfThieves.Common;
 using DukeOfThieves.Infrastructure.AssetManagement;
+using DukeOfThieves.Logic;
 using DukeOfThieves.Services;
 using DukeOfThieves.Services.Randomizer;
 using DukeOfThieves.StaticData;
@@ -25,6 +26,10 @@ namespace DukeOfThieves.Infrastructure
     private readonly IGameStateMachine _stateMachine;
 
     private LevelStorage _levelStorage;
+    private LevelLayoutController _layoutController;
+    private LevelStaticData _levelData;
+    private int _selectedLevelIndex;
+    private CoinLogic _coin;
     
     public GameFactory(
       IAssetProvider assets, 
@@ -43,12 +48,23 @@ namespace DukeOfThieves.Infrastructure
     public async Task WarmUp(Action onWarmed)
     {
       _levelStorage = await _assets.Load<LevelStorage>(AssetAddress.LevelStorage);
+      var coinObject = await _assets.Load<GameObject>(AssetAddress.Coin);
+      _coin = coinObject.GetComponent<CoinLogic>();
       onWarmed?.Invoke();
+    }
+
+    public void SetLevelLayoutController(LevelLayoutController layoutController)
+    {
+      _layoutController = layoutController;
     }
 
     public async Task<GameObject> CreateHero(Vector2 at) =>
       _heroGameObject = await InstantiateRegisteredAsync(AssetAddress.HeroPath, at);
-    
+
+    public void CreateLevel()
+    {
+      _layoutController.Init(_levelData, _coin);
+    }
 
     private void Register(ISavedProgressReader progressReader)
     {
@@ -68,7 +84,9 @@ namespace DukeOfThieves.Infrastructure
 
     public LevelStaticData PrepareLevel(int index)
     {
-      return _levelStorage.GetLevelByIndex(index);
+      _selectedLevelIndex = index;
+      _levelData = _levelStorage.GetLevelByIndex(index);
+      return _levelData;
     }
 
     private GameObject InstantiateRegistered(GameObject prefab, Vector3 at)

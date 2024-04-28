@@ -12,9 +12,9 @@ namespace DukeOfThieves.Infrastructure
 
         public GameStateMachine StateMachine => _stateMachine;
 
-        public Game(ICoroutineRunner coroutineRunner, LoadingCurtain curtain, UIManager uiManager, InputListener inputListener, LevelLayoutController levelLayoutController)
+        public Game(ICoroutineRunner coroutineRunner, LoadingCurtain curtain, UIManager uiManager, InputListener inputListener)
         {
-            _stateMachine = new GameStateMachine(new SceneLoader(coroutineRunner), curtain, uiManager, inputListener, levelLayoutController, AllServices.Container);
+            _stateMachine = new GameStateMachine(new SceneLoader(coroutineRunner), curtain, uiManager, inputListener, AllServices.Container);
         }
     }
 }

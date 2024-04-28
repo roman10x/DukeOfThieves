@@ -8,5 +8,6 @@ namespace DukeOfThieves.Infrastructure.AssetManagement
     public const string WindowStorage = "WindowStorage";
     public const string LevelStorage = "LevelStorage";
     public const string InputListener = "InputListener";
+    public const string Coin = "Coin";
   }
 }

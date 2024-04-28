@@ -12,8 +12,10 @@ namespace DukeOfThieves.Infrastructure
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
         Task<GameObject> CreateHero(Vector2 at);
+        void CreateLevel();
         LevelStaticData PrepareLevel(int index);
         void Cleanup();
         Task WarmUp(Action onWarmed);
+        void SetLevelLayoutController(LevelLayoutController layoutController);
     }
 }

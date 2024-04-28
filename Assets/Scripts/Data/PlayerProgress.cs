@@ -16,6 +16,8 @@ namespace DukeOfThieves.Data
 
     [JsonIgnore] 
     public WorldData WorldData => _worldData;
+    [JsonIgnore] 
+    public PlayerData PlayerData => _playerData;
 
     public PlayerProgress(LevelStorage levelStorage)
     {

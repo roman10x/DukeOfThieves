@@ -24,14 +24,13 @@ namespace UI.Windows
         {
             _startGameButton.onClick.AddListener(HandleStartGameButton);
             _playerProgress = AllServices.Container.Single<IPersistentProgressService>().Progress;
-            InitWidgets(_playerProgress.WorldData);
+            InitWidgets(_playerProgress);
 
             PushFinished();
         }
 
         public override void OnPop()
         {
-            
             _startGameButton.onClick.RemoveAllListeners();
             PopFinished();
         }
@@ -41,7 +40,7 @@ namespace UI.Windows
             AllServices.Container.Single<IGameStateMachine>().Enter<LoadLevelState, int>(_selectedLevelIndex);
         }
 
-        private void InitWidgets(WorldData worldData)
+        private void InitWidgets(PlayerProgress playerProgress)
         {
             var levelStorage = AllServices.Container.Single<IStaticDataService>().LevelStorage;
             UIHelper.InitWidgets(_levelCardWidgets, levelStorage.GetTotalLevelAmount(),
@@ -49,9 +48,9 @@ namespace UI.Windows
                 {
                     w.Init(levelStorage.GetLevelByIndex(index), 
                         OnWidgetSelected, 
-                        worldData.LootDataForLevel(index), 
+                        playerProgress.WorldData.LootDataForLevel(index), 
                         index, 
-                        index == 0);
+                        index == playerProgress.PlayerData.LastFinishedLevel);
                 });
         }
         

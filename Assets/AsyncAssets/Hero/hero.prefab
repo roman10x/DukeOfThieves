@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 173255548760176002}
   - component: {fileID: 7361961445452556085}
   - component: {fileID: 5339586101059539248}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BottomCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 8687834861094777649}
   - component: {fileID: 2148520302459746522}
   - component: {fileID: 2283107126516307882}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TopCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,7 +171,7 @@ GameObject:
   - component: {fileID: 4603350016411468085}
   - component: {fileID: 1121681567998395476}
   - component: {fileID: 2596616320293511075}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FrontCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 7634203257854197431}
   - component: {fileID: 5263040322810415276}
   - component: {fileID: 1710680940184549830}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: hero
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +293,6 @@ MonoBehaviour:
   _bottomColliderHandler: {fileID: 5339586101059539248}
   _frontColliderHandler: {fileID: 2596616320293511075}
   _rigidBody: {fileID: 5263040322810415276}
-  _inputListener: {fileID: 0}
   _moveSpeed: 2.5
   _jumpSpeed: 5.25
   _wallSlideSpeed: -2
