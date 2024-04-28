@@ -31,8 +31,8 @@ namespace DukeOfThieves.Infrastructure
             _coins = new List<GameObject>();
             _sessionService = sessionService;
             _coinPrefab = coinPrefab;
-            var levelObj = GameObject.Instantiate(levelData.GamePrefab, _levelContainer.transform);
-            levelObj.transform.localPosition = _levelContainer.transform.localPosition;
+            _levelObject = GameObject.Instantiate(levelData.GamePrefab, _levelContainer.transform);
+            _levelObject.transform.localPosition = _levelContainer.transform.localPosition;
             InitializeTilemap();
             _levelTimerController.StartTimer(onLevelFinished);
         }
@@ -48,6 +48,8 @@ namespace DukeOfThieves.Infrastructure
                     DestroyImmediate(coin);
                 }
             }
+            
+            _coins.Clear();
         }
         
         private void InitializeTilemap()

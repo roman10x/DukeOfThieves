@@ -12,7 +12,7 @@ namespace UI.Windows
         [SerializeField] 
         private Button _pauseGameButton;
         [SerializeField] 
-        private TMP_Text _totalCollectedGoldAmountLabel;
+        private TMP_Text _recordCollectedGoldAmountLabel;
         [SerializeField] 
         private TMP_Text _sessionCollectedGoldAmountLabel;
         [SerializeField] 
@@ -25,7 +25,7 @@ namespace UI.Windows
             _sessionService = AllServices.Container.Single<ILevelSessionDataService>();
             _progressService = AllServices.Container.Single<IPersistentProgressService>();
             _pauseGameButton.onClick.AddListener(HandlePauseGameButton);
-            _totalCollectedGoldAmountLabel.text = $"Record: {_progressService.Progress.PlayerData.TotalCoinsCollected}";
+            _recordCollectedGoldAmountLabel.text = $"Record: {_progressService.Progress.WorldData.LootDataForLevel(_sessionService.CurrentLevelIndex).CollectedCoins}";
             UpdateCurrentLootLabel(0);
             LevelSessionDataService.OnLootCollected += UpdateCurrentLootLabel;
             LevelTimerController.OnTimerUpdated += UpdateTimerCountdown;

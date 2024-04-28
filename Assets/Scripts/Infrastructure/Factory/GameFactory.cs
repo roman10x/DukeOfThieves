@@ -80,13 +80,13 @@ namespace DukeOfThieves.Infrastructure
     {
       ProgressReaders.Clear();
       ProgressWriters.Clear();
+      _sessionDataService.StartSession(_selectedLevelIndex);
       _assets.Cleanup();
     }
 
     public void StopGame()
     {
       _sessionDataService.CleanupProgress();
-      _sessionDataService.StartSession(_selectedLevelIndex);
       _layoutController.CleanUp(_heroGameObject);
     }
 

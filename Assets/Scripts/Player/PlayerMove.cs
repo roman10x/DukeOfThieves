@@ -148,11 +148,23 @@ namespace DukeOfThieves.Player
         private void HandlePause(bool pauseState)
         {
             _canMove = !pauseState;
+            if (pauseState)
+            {
+                _rigidBody.velocity = Vector3.zero;
+                _rigidBody.angularVelocity = 0;
+                
+                _rigidBody.bodyType = RigidbodyType2D.Static;
+            }
+            else
+            {
+                _rigidBody.bodyType = RigidbodyType2D.Dynamic;
+            }
         }
 
         private void HandlePopUpClose()
         {
             _canMove = true;
+           
         }
     }
 }
