@@ -80,7 +80,6 @@ namespace DukeOfThieves.Infrastructure
     {
       ProgressReaders.Clear();
       ProgressWriters.Clear();
-      _sessionDataService.StartSession(_selectedLevelIndex);
       _assets.Cleanup();
     }
 
@@ -93,6 +92,7 @@ namespace DukeOfThieves.Infrastructure
     public LevelStaticData PrepareLevel(int index)
     {
       _selectedLevelIndex = index;
+      _sessionDataService.StartSession(_selectedLevelIndex);
       _levelData = _levelStorage.GetLevelByIndex(index);
       return _levelData;
     }
