@@ -25,9 +25,7 @@ namespace DukeOfThieves.Logic
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
-                Debug.Log(other);
                 OnCollected();
-                return;
             }
 
          

@@ -63,6 +63,7 @@ namespace DukeOfThieves.Infrastructure
         _services.Single<IGameFactory>()));
       
       RegisterStaticDataService();
+      RegisterLevelSessionService();
       
       _services.RegisterSingle<UIManager>(_uiManager);
       _uiManager.Init(_assetProvider);
@@ -76,6 +77,13 @@ namespace DukeOfThieves.Infrastructure
     }
 
     private void RegisterStaticDataService()
+    {
+      IStaticDataService staticData = new StaticDataService();
+      staticData.Load(_assetProvider);
+      _services.RegisterSingle(staticData);
+    } 
+    
+    private void RegisterLevelSessionService() // ALL BAD HERE
     {
       IStaticDataService staticData = new StaticDataService();
       staticData.Load(_assetProvider);

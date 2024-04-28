@@ -1,4 +1,5 @@
 ﻿using DukeOfThieves.Logic;
+using DukeOfThieves.Services;
 using DukeOfThieves.StaticData;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -14,11 +15,13 @@ namespace DukeOfThieves.Infrastructure
         private Grid _tilemapGrid;
         [SerializeField]
         private Transform _emptyCellsParent;
-        
+
+        private IPersistentProgressService _progressService;
         private CoinLogic _coinPrefab;
 
-        public void Init(LevelStaticData levelData, CoinLogic coinPrefab)
+        public void Init(LevelStaticData levelData, CoinLogic coinPrefab, int levelIndex, IPersistentProgressService persistentProgressService)
         {
+            _progressService = persistentProgressService;
             _coinPrefab = coinPrefab;
             var levelObj = GameObject.Instantiate(levelData.GamePrefab, _levelContainer.transform);
             levelObj.transform.localPosition = _levelContainer.transform.localPosition;

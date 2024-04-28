@@ -63,7 +63,7 @@ namespace DukeOfThieves.Infrastructure
 
     public void CreateLevel()
     {
-      _layoutController.Init(_levelData, _coin);
+      _layoutController.Init(_levelData, _coin, _selectedLevelIndex, _persistentProgressService);
     }
 
     private void Register(ISavedProgressReader progressReader)
@@ -88,22 +88,7 @@ namespace DukeOfThieves.Infrastructure
       _levelData = _levelStorage.GetLevelByIndex(index);
       return _levelData;
     }
-
-    private GameObject InstantiateRegistered(GameObject prefab, Vector3 at)
-    {
-      GameObject gameObject = Object.Instantiate(prefab, at, Quaternion.identity);
-      RegisterProgressWatchers(gameObject);
-
-      return gameObject;
-    }
-    
-    private GameObject InstantiateRegistered(GameObject prefab)
-    {
-      GameObject gameObject = Object.Instantiate(prefab);
-      RegisterProgressWatchers(gameObject);
-
-      return gameObject;
-    }
+   
 
     private async Task<GameObject> InstantiateRegisteredAsync(string prefabPath, Vector2 at)
     {
@@ -112,15 +97,7 @@ namespace DukeOfThieves.Infrastructure
 
       return gameObject;
     }
-
-    private async Task<GameObject> InstantiateRegisteredAsync(string prefabPath)
-    {
-      GameObject gameObject = await _assets.Instantiate(path: prefabPath);
-      RegisterProgressWatchers(gameObject);
-
-      return gameObject;
-    }
-
+   
     private void RegisterProgressWatchers(GameObject gameObject)
     {
       foreach (ISavedProgressReader progressReader in gameObject.GetComponentsInChildren<ISavedProgressReader>())
