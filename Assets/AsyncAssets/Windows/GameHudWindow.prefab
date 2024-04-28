@@ -658,7 +658,7 @@ MonoBehaviour:
   _keepCached: 0
   _pushedAsPopUp: 0
   _pauseGameButton: {fileID: 8097477551426220464}
-  _totalCollectedGoldAmountLabel: {fileID: 1869796801565742672}
+  _recordCollectedGoldAmountLabel: {fileID: 1869796801565742672}
   _sessionCollectedGoldAmountLabel: {fileID: 1472257402853785530}
   _timerLabel: {fileID: 3768367069330632254}
 --- !u!1 &4022629240855635380
