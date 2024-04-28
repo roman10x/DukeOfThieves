@@ -47,3 +47,4 @@ MonoBehaviour:
   _curtainPrefab: {fileID: 8713324141352661597, guid: d8525a39498a67646abbf223b3b3a58b, type: 3}
   _uiManager: {fileID: 2567602780958181284, guid: 822c8470065d8e74e98ebe5cb6bf8128, type: 3}
   _inputListener: {fileID: 8722965280122449374, guid: 65279d18a18d67a47bc7222bd9ad3d08, type: 3}
+  _levelLayoutControllerPrefab: {fileID: 6226316218029969095, guid: bf311d90404c9944b95f80332f7f7810, type: 3}

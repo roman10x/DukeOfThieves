@@ -13,6 +13,10 @@ namespace DukeOfThieves.Infrastructure
         private UIManager _uiManager;
         [SerializeField] 
         private InputListener _inputListener;
+        [SerializeField] 
+        private LevelLayoutController _levelLayoutControllerPrefab;
+
+        private LevelLayoutController _levelLayoutController;
         
         private Game _game;
 
@@ -22,10 +26,16 @@ namespace DukeOfThieves.Infrastructure
             var uiManager = Instantiate(_uiManager, parent: this.transform);
             var inputListener = Instantiate(_inputListener, parent: this.transform);
             
-            _game = new Game(this, loadingCurtain, uiManager, inputListener);
+            _game = new Game(this, loadingCurtain, uiManager, inputListener, _levelLayoutController);
             _game.StateMachine.Enter<BootstrapState>();
 
             DontDestroyOnLoad(this);
+        }
+
+        public void SetupLevelLayoutController()
+        {
+            var levelController = Instantiate(_levelLayoutControllerPrefab);
+            _levelLayoutController = levelController;
         }
     }
 }

@@ -7,6 +7,8 @@ namespace DukeOfThieves.Infrastructure
 {
     public class SceneLoader
     {
+        private const string MainSceneName = "GameScene";
+        
         private readonly ICoroutineRunner _coroutineRunner;
 
         public SceneLoader(ICoroutineRunner coroutineRunner)
@@ -32,6 +34,10 @@ namespace DukeOfThieves.Infrastructure
             while (!waitNextScene.isDone)
                 yield return null;
       
+            if (nextScene == MainSceneName)
+            {
+                (_coroutineRunner as GameBootstrapper)?.SetupLevelLayoutController();
+            }
             onLoaded?.Invoke();
         }
     }

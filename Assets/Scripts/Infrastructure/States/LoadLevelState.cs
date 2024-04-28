@@ -22,7 +22,7 @@ namespace DukeOfThieves.Infrastructure
     private int _levelToLoad;
     private string _sceneName;
 
-    public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain, UIManager uiManager, IGameFactory gameFactory, IPersistentProgressService progressService, IStaticDataService staticDataService)
+    public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain, UIManager uiManager, IGameFactory gameFactory, IPersistentProgressService progressService, IStaticDataService staticDataService, LevelLayoutController levelLayoutController)
     {
       _stateMachine = gameStateMachine;
       _sceneLoader = sceneLoader;
