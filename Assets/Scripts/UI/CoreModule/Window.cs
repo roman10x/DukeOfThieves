@@ -1,4 +1,5 @@
 using System;
+using DukeOfThieves.Services;
 using UnityEngine;
 
 namespace UICore
@@ -90,7 +91,7 @@ namespace UICore
         /// </summary>
         public virtual void Hide()
         {
-            UIManager.Instance.QueuePop(this);
+            AllServices.Container.Single<UIManager>().QueuePop(this);
         }
 
         

@@ -13,6 +13,8 @@ public class MainMenuWindow : Window
     public override void OnPush()
     {
         _startGameButton.onClick.AddListener(HandleStartGameButton);
+        var totalCoinsCollected = AllServices.Container.Single<IPersistentProgressService>().Progress.PlayerData.TotalCoinsCollected;
+        _collectedGoldAmountLabel.text = $"{totalCoinsCollected} Coins Stolen";
         PushFinished();
     }
 

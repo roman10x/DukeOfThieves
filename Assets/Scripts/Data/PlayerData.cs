@@ -22,6 +22,16 @@ namespace DukeOfThieves.Data
             _totalCoinsCollected = 0;
             _lastFinishedLevel = 0;
         }
+
+        public void SetLastFinishedLevel(int levelIndex)
+        {
+            _lastFinishedLevel = levelIndex;
+        }
+
+        public void AddTotalCoins(int coinsToAdd)
+        {
+            _totalCoinsCollected += coinsToAdd;
+        }
         
         [JsonConstructor]
         private PlayerData(int totalCoinsCollected, int lastFinishedLevel)

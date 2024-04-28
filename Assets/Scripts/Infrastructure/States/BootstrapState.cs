@@ -45,6 +45,7 @@ namespace DukeOfThieves.Infrastructure
     {
       _services.RegisterSingle<IGameStateMachine>(_stateMachine);
       RegisterAssetProvider();
+      RegisterLevelSessionService();
       _services.RegisterSingle<IRandomService>(new RandomService());
       _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
 
@@ -53,7 +54,8 @@ namespace DukeOfThieves.Infrastructure
         _services.Single<IStaticDataService>(),
         _services.Single<IRandomService>(),
         _services.Single<IPersistentProgressService>(),
-        _services.Single<IGameStateMachine>()
+        _services.Single<IGameStateMachine>(),
+        _services.Single<ILevelSessionDataService>()
         ));
       
       _services.RegisterSingle<InputListener>(_inputListener);
@@ -63,7 +65,7 @@ namespace DukeOfThieves.Infrastructure
         _services.Single<IGameFactory>()));
       
       RegisterStaticDataService();
-      RegisterLevelSessionService();
+      
       
       _services.RegisterSingle<UIManager>(_uiManager);
       _uiManager.Init(_assetProvider);
@@ -83,11 +85,10 @@ namespace DukeOfThieves.Infrastructure
       _services.RegisterSingle(staticData);
     } 
     
-    private void RegisterLevelSessionService() // ALL BAD HERE
+    private void RegisterLevelSessionService()
     {
-      IStaticDataService staticData = new StaticDataService();
-      staticData.Load(_assetProvider);
-      _services.RegisterSingle(staticData);
+      ILevelSessionDataService levelSessionData = new LevelSessionDataService();
+      _services.RegisterSingle(levelSessionData);
     }
 
     private void EnterMainMenu() =>

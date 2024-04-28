@@ -10,5 +10,7 @@ namespace UICore
         MainMenuWindow = 1,
         GameHud = 10,
         StartLevelPopUp = 20, 
+        PausePopUp = 30,
+        TapToStartPopUp = 40
     }
 }

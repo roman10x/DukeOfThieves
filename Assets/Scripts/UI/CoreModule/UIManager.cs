@@ -16,7 +16,6 @@ namespace UICore
         private SceneLoader _sceneLoader; 
         private CanvasScaler _rootCanvasScaler;
         private const int WindowSortingStartingInt = 50;
-        public static UIManager Instance { get; private set; }
 
         private abstract class WindowStack
         {
@@ -92,16 +91,7 @@ namespace UICore
            
             SetWindowStorage();
         }
-
-      
-
-        private void OnDestroy()
-        {
-            if (Instance == this)
-            {
-                Instance = null;
-            }
-        }
+        
         private async Task SetWindowStorage()
         {
             _windowStorage = await _assetSystem.Load<WindowStorage>(AssetAddress.WindowStorage);

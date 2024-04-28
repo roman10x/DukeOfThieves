@@ -10,5 +10,10 @@ namespace DukeOfThieves.Data
     private int _value;
 
     public int Value => _value;
+
+    public Loot(int value)
+    {
+      _value = value;
+    }
   }
 }

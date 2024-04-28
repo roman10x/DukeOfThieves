@@ -7,6 +7,7 @@ using DukeOfThieves.Logic;
 using DukeOfThieves.Services;
 using DukeOfThieves.Services.Randomizer;
 using DukeOfThieves.StaticData;
+using UI.Windows;
 using UnityEngine;
 using UnityEngine.AI;
 using Object = UnityEngine.Object;
@@ -22,27 +23,28 @@ namespace DukeOfThieves.Infrastructure
     private readonly IStaticDataService _staticData;
     private readonly IRandomService _randomService;
     private readonly IPersistentProgressService _persistentProgressService;
-    private GameObject _heroGameObject;
     private readonly IGameStateMachine _stateMachine;
-
+    private readonly ILevelSessionDataService _sessionDataService;
+    
+    private GameObject _heroGameObject;
     private LevelStorage _levelStorage;
     private LevelLayoutController _layoutController;
     private LevelStaticData _levelData;
     private int _selectedLevelIndex;
     private CoinLogic _coin;
     
-    public GameFactory(
-      IAssetProvider assets, 
-      IStaticDataService staticData, 
-      IRandomService randomService, 
-      IPersistentProgressService persistentProgressService, 
-      IGameStateMachine stateMachine)
+    public GameFactory(IAssetProvider assets,
+      IStaticDataService staticData,
+      IRandomService randomService,
+      IPersistentProgressService persistentProgressService,
+      IGameStateMachine stateMachine, ILevelSessionDataService sessionData)
     {
       _assets = assets;
       _staticData = staticData;
       _randomService = randomService;
       _persistentProgressService = persistentProgressService;
       _stateMachine = stateMachine;
+      _sessionDataService = sessionData;
     }
 
     public async Task WarmUp(Action onWarmed)
@@ -61,9 +63,9 @@ namespace DukeOfThieves.Infrastructure
     public async Task<GameObject> CreateHero(Vector2 at) =>
       _heroGameObject = await InstantiateRegisteredAsync(AssetAddress.HeroPath, at);
 
-    public void CreateLevel()
+    public void CreateLevel(Action<bool> onLevelFinished)
     {
-      _layoutController.Init(_levelData, _coin, _selectedLevelIndex, _persistentProgressService);
+      _layoutController.Init(_levelData, _coin, _selectedLevelIndex, _sessionDataService, onLevelFinished);
     }
 
     private void Register(ISavedProgressReader progressReader)
@@ -78,8 +80,14 @@ namespace DukeOfThieves.Infrastructure
     {
       ProgressReaders.Clear();
       ProgressWriters.Clear();
-      
       _assets.Cleanup();
+    }
+
+    public void StopGame()
+    {
+      _sessionDataService.CleanupProgress();
+      _sessionDataService.StartSession(_selectedLevelIndex);
+      _layoutController.CleanUp(_heroGameObject);
     }
 
     public LevelStaticData PrepareLevel(int index)

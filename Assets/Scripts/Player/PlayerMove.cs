@@ -1,6 +1,8 @@
 ﻿using System;
 using DukeOfThieves.Common;
+using DukeOfThieves.Infrastructure;
 using DukeOfThieves.Services;
+using UI.Windows;
 using UICore;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -31,16 +33,30 @@ namespace DukeOfThieves.Player
         private bool _isTouchingWall;
         private bool _isFalling;
 
+        private bool _canMove;
+
         private void Start()
         {
+            GameLoopState.OnGameStop += Stop;
+            PausePopUp.OnPauseTap += HandlePause;
+            TapToStartPopUp.OnClose += HandlePopUpClose;
             _inputListener = AllServices.Container.Single<InputListener>();
             var uiManager = AllServices.Container.Single<UIManager>();
             _inputListener.Initialize(OnTap);
             InitColliderHandlers();
         }
-        
+
+        private void Stop()
+        {
+            TapToStartPopUp.OnClose -= HandlePopUpClose;
+            GameLoopState.OnGameStop -= Stop;
+            PausePopUp.OnPauseTap -= HandlePause;
+        }
         private void FixedUpdate()
         {
+            if(!_canMove)
+                return;
+            
             var speed = _rigidBody.velocity;
             if (!_isTouchingWall)
             {
@@ -127,6 +143,16 @@ namespace DukeOfThieves.Player
             transform.right *= -1.0f;
             _isFalling = false; 
             _canJump = true;
+        }
+        
+        private void HandlePause(bool pauseState)
+        {
+            _canMove = !pauseState;
+        }
+
+        private void HandlePopUpClose()
+        {
+            _canMove = true;
         }
     }
 }

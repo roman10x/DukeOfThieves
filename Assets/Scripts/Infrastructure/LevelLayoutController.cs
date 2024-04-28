@@ -1,4 +1,6 @@
-﻿using DukeOfThieves.Logic;
+﻿using System;
+using System.Collections.Generic;
+using DukeOfThieves.Logic;
 using DukeOfThieves.Services;
 using DukeOfThieves.StaticData;
 using Unity.VisualScripting;
@@ -15,17 +17,37 @@ namespace DukeOfThieves.Infrastructure
         private Grid _tilemapGrid;
         [SerializeField]
         private Transform _emptyCellsParent;
+        [SerializeField] 
+        private LevelTimerController _levelTimerController;
 
-        private IPersistentProgressService _progressService;
+        private ILevelSessionDataService _sessionService;
         private CoinLogic _coinPrefab;
+        private GameObject _levelObject;
+        private GameObject _coinObject;
+        private List<GameObject> _coins;
 
-        public void Init(LevelStaticData levelData, CoinLogic coinPrefab, int levelIndex, IPersistentProgressService persistentProgressService)
+        public void Init(LevelStaticData levelData, CoinLogic coinPrefab, int levelIndex, ILevelSessionDataService sessionService, Action<bool> onLevelFinished)
         {
-            _progressService = persistentProgressService;
+            _coins = new List<GameObject>();
+            _sessionService = sessionService;
             _coinPrefab = coinPrefab;
             var levelObj = GameObject.Instantiate(levelData.GamePrefab, _levelContainer.transform);
             levelObj.transform.localPosition = _levelContainer.transform.localPosition;
             InitializeTilemap();
+            _levelTimerController.StartTimer(onLevelFinished);
+        }
+
+        public void CleanUp(GameObject heroGameObject)
+        {
+            DestroyImmediate(_levelObject);
+            DestroyImmediate(heroGameObject);
+            if (_coins.Count >= 0)
+            {
+                foreach (var coin in _coins)
+                {
+                    DestroyImmediate(coin);
+                }
+            }
         }
         
         private void InitializeTilemap()
@@ -50,10 +72,11 @@ namespace DukeOfThieves.Infrastructure
         
         private void CreateCoinInCell(Vector3 place, int x, int y)
         {
-            var emptyCellObj = Instantiate(_coinPrefab, _emptyCellsParent);
-            emptyCellObj.name = "cell_" + x.ToString() + "_" + y.ToString();
-            emptyCellObj.transform.position = place;
-            emptyCellObj.GetComponent<CoinLogic>().Initialize();
+            _coinObject = Instantiate(_coinPrefab.gameObject, _emptyCellsParent);
+            _coinObject.name = "cell_" + x.ToString() + "_" + y.ToString();
+            _coinObject.transform.position = place;
+            _coinObject.GetComponent<CoinLogic>().Initialize(_sessionService.AddLootInfo);
+            _coins.Add(_coinObject);
         }
         
     }

@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using DukeOfThieves.StaticData;
 using Newtonsoft.Json;
-using RotaryHeart.Lib.SerializableDictionaryPro;
-using UnityEngine;
 
 namespace DukeOfThieves.Data
 {
@@ -16,6 +14,12 @@ namespace DukeOfThieves.Data
         public LootData LootDataForLevel(int index)
         {
             return _lootDataByLevelIndex[index];
+        }
+
+        public void AddLootValueForLevel(int levelIndex, int lootValue)
+        {
+            var loot = new Loot(lootValue);
+            _lootDataByLevelIndex[levelIndex].Collect(loot);
         }
 
         public WorldData(LevelStorage levelStorage)

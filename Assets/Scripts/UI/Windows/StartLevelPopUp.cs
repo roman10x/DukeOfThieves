@@ -18,7 +18,6 @@ namespace UI.Windows
 
         private int _selectedLevelIndex;
         private PlayerProgress _playerProgress;
-        private int _selectedLevelIndexId;
 
         public override void OnPush()
         {
@@ -56,7 +55,7 @@ namespace UI.Windows
         
         private void OnWidgetSelected(int selectedLevelIndex)
         {
-            _selectedLevelIndexId = selectedLevelIndex;
+            _selectedLevelIndex = selectedLevelIndex;
         }
     }
 }
