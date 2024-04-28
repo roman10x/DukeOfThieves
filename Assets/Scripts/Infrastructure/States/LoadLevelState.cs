@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DukeOfThieves.Logic;
 using DukeOfThieves.Services;
 using DukeOfThieves.StaticData;
+using UICore;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,10 +17,12 @@ namespace DukeOfThieves.Infrastructure
     private readonly IGameFactory _gameFactory;
     private readonly IPersistentProgressService _progressService;
     private readonly IStaticDataService _staticData;
+    private readonly UIManager _uiManager;
 
+    private int _levelToLoad;
     private string _sceneName;
 
-    public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain, IGameFactory gameFactory, IPersistentProgressService progressService, IStaticDataService staticDataService)
+    public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain, UIManager uiManager, IGameFactory gameFactory, IPersistentProgressService progressService, IStaticDataService staticDataService)
     {
       _stateMachine = gameStateMachine;
       _sceneLoader = sceneLoader;
@@ -26,27 +30,34 @@ namespace DukeOfThieves.Infrastructure
       _gameFactory = gameFactory;
       _progressService = progressService;
       _staticData = staticDataService;
+      _uiManager = uiManager;
     }
 
     public void Enter(int levelIndex)
     {
-      Debug.Log("level started");
+      _levelToLoad = levelIndex;
       _loadingCurtain.Show();
+      _uiManager.QueuePop(WindowKeys.StartLevelPopUp);
+      _uiManager.QueuePop(WindowKeys.MainMenuWindow);
       _gameFactory.Cleanup();
       _gameFactory.WarmUp(OnWarmed);
     }
 
     private void OnWarmed()
     {
-      _sceneLoader.Load(_sceneName, OnLoaded);
+      OnLoaded();
     }
 
-    public void Exit() =>
+    public void Exit()
+    {
+      Debug.Log("Level load exit");
       _loadingCurtain.Hide();
+    }
 
-    private async void OnLoaded()
+    private async Task OnLoaded()
     {
       await InitGameWorld();
+      await Task.Delay(TimeSpan.FromSeconds(0.5)); // To avoid loading blink on fast devices
       InformProgressReaders();
 
       _stateMachine.Enter<GameLoopState>();
@@ -60,7 +71,7 @@ namespace DukeOfThieves.Infrastructure
 
     private async Task InitGameWorld()
     {
-      LevelStaticData levelData = _gameFactory.PrepareLevel(0);
+      LevelStaticData levelData = _gameFactory.PrepareLevel(_levelToLoad);
 
       await InitSpawners(levelData);
       await InitLootPieces();
@@ -80,10 +91,6 @@ namespace DukeOfThieves.Infrastructure
 
     private async Task<GameObject> InitHero(LevelStaticData levelStaticData) => 
       await _gameFactory.CreateHero(levelStaticData.InitialHeroPosition);
-
    
-
-    private LevelStaticData LevelStaticData() => 
-      _staticData.ForLevel(SceneManager.GetActiveScene().name);
   }
 }

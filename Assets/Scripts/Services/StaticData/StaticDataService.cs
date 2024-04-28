@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using DukeOfThieves.Infrastructure.AssetManagement;
 using DukeOfThieves.StaticData;
 using UnityEngine;
 
@@ -7,25 +9,17 @@ namespace DukeOfThieves.Services
 {
   public class StaticDataService : IStaticDataService
   {
-    private const string MonstersDataPath = "Static Data/Monsters";
-    private const string LevelsDataPath = "Static Data/Levels";
-    private const string StaticDataWindowPath = "Static Data/UI/WindowStaticData";
+    private LevelStorage _levelStorage;
 
-    
-    private Dictionary<string, LevelStaticData> _levels;
-  
-
-
-    public void Load()
+    public LevelStorage LevelStorage => _levelStorage;
+    public void Load(AssetProvider assetProvider)
     {
-      _levels = Resources
-        .LoadAll<LevelStaticData>(LevelsDataPath)
-        .ToDictionary(x => x.LevelKey, x => x);
+      SetLevelStorage(assetProvider);
     }
 
-    public LevelStaticData ForLevel(string sceneKey) =>
-      _levels.TryGetValue(sceneKey, out LevelStaticData staticData)
-        ? staticData
-        : null;
+    private async Task SetLevelStorage(AssetProvider assetProvider)
+    {
+      _levelStorage = await assetProvider.Load<LevelStorage>(AssetAddress.LevelStorage);
+    }
   }
 }

@@ -43,8 +43,6 @@ namespace DukeOfThieves.Infrastructure
 
     private void RegisterServices()
     {
-      RegisterStaticDataService();
-      
       _services.RegisterSingle<IGameStateMachine>(_stateMachine);
       RegisterAssetProvider();
       _services.RegisterSingle<IRandomService>(new RandomService());
@@ -64,6 +62,8 @@ namespace DukeOfThieves.Infrastructure
         _services.Single<IPersistentProgressService>(),
         _services.Single<IGameFactory>()));
       
+      RegisterStaticDataService();
+      
       _services.RegisterSingle<UIManager>(_uiManager);
       _uiManager.Init(_assetProvider);
     }
@@ -78,7 +78,7 @@ namespace DukeOfThieves.Infrastructure
     private void RegisterStaticDataService()
     {
       IStaticDataService staticData = new StaticDataService();
-      staticData.Load();
+      staticData.Load(_assetProvider);
       _services.RegisterSingle(staticData);
     }
 

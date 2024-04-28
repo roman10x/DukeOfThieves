@@ -11,6 +11,8 @@ namespace DukeOfThieves.Data
     private int _collectedCoins;
     
     [JsonIgnore]
+    public int CollectedCoins => _collectedCoins;
+    [JsonIgnore]
     public Action Changed;
 
     public void Collect(Loot loot)

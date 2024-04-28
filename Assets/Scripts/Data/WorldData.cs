@@ -13,6 +13,11 @@ namespace DukeOfThieves.Data
         [JsonProperty(PropertyName = "lootDataByLevelIndex")]
         private List<LootData> _lootDataByLevelIndex;
 
+        public LootData LootDataForLevel(int index)
+        {
+            return _lootDataByLevelIndex[index];
+        }
+
         public WorldData(LevelStorage levelStorage)
         {
             _lootDataByLevelIndex = new List<LootData>(levelStorage.GetTotalLevelAmount());
@@ -29,7 +34,6 @@ namespace DukeOfThieves.Data
         }
 
         [JsonConstructor]
-        
         private WorldData(List<LootData> lootDataByLevelIndex)
         {
             _lootDataByLevelIndex = lootDataByLevelIndex;

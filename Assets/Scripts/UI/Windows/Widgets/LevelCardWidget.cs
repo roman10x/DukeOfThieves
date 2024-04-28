@@ -1,4 +1,5 @@
-﻿using DukeOfThieves.StaticData;
+﻿using DukeOfThieves.Data;
+using DukeOfThieves.StaticData;
 using TMPro;
 using UICore;
 using UnityEngine;
@@ -19,10 +20,11 @@ namespace UI.Windows.Widgets
         [SerializeField] 
         private GameObject _selectedFrame;
 
-        public void Init(LevelStaticData levelData, int collectedCoins)
+        public void Init(LevelStaticData levelData, LootData lootData)
         {
             _levelIcon.sprite = levelData.MenuImage;
             _levelNameLabel.text = levelData.LevelKey; // Connect key to localization
+            var collectedCoins = lootData.CollectedCoins;
             _collectedGoldRecordLabel.text = $"x{collectedCoins}";
         }
     }
